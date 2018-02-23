@@ -13,7 +13,7 @@ import (
 	"github.com/spf13/cobra"
 )
 
-const daemonBinary = "dockerd"
+const daemonBinary = "system-dockerd"
 
 func newDaemonCommand() *cobra.Command {
 	cmd := &cobra.Command{
