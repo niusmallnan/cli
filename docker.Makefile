@@ -16,6 +16,10 @@ ENVVARS = -e VERSION=$(VERSION) -e GITCOMMIT
 build_docker_image:
 	docker build -t $(DEV_DOCKER_IMAGE_NAME) -f ./dockerfiles/Dockerfile.dev .
 
+.PHONY: build_docker_image_arm64
+build_docker_image_arm64:
+	docker build -t $(DEV_DOCKER_IMAGE_NAME) -f ./dockerfiles/Dockerfile.dev.arm64 .
+
 # build docker image having the linting tools (dockerfiles/Dockerfile.lint)
 .PHONY: build_linter_image
 build_linter_image:
@@ -31,6 +35,12 @@ binary: build_docker_image
 	docker run --rm $(ENVVARS) $(MOUNTS) $(DEV_DOCKER_IMAGE_NAME) make binary
 
 build: binary
+
+
+binary_arm64: build_docker_image_arm64
+	docker run --rm $(ENVVARS) $(MOUNTS) $(DEV_DOCKER_IMAGE_NAME) make binary
+
+build_arm64: binary_arm64
 
 # clean build artifacts using a container
 .PHONY: clean
